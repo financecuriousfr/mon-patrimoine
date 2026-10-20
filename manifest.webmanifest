@@ -1,0 +1,16 @@
+{
+  "name": "Mon Patrimoine",
+  "short_name": "Patrimoine",
+  "description": "Ton patrimoine en direct, ludique, et la course avec tes amis",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d0f16",
+  "theme_color": "#0d0f16",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}

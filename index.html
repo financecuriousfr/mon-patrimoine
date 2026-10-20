@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mon Patrimoine</title>
+<meta name="theme-color" content="#0d0f16">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Patrimoine">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <img class="brand-logo" src="icon.png" alt="">
+      <div>
+        <div class="brand-name">Mon Patrimoine</div>
+        <div class="brand-sub" id="brandLevel">—</div>
+        <div class="brand-user" id="brandUser"></div>
+      </div>
+    </div>
+    <nav class="nav" id="nav">
+      <button data-view="dashboard" class="active"><span>🏠</span><em>Tableau de bord</em></button>
+      <button data-view="accounts"><span>💼</span><em>Patrimoine</em></button>
+      <button data-view="projection"><span>🔮</span><em>Projection</em></button>
+      <button data-view="goals"><span>🎯</span><em>Objectifs</em></button>
+      <button data-view="friends"><span>👥</span><em>Amis</em></button>
+      <button data-view="badges"><span>🏆</span><em>Succès</em></button>
+      <button data-view="history"><span>📸</span><em>Historique</em></button>
+      <button data-view="settings"><span>⚙️</span><em>Réglages</em></button>
+    </nav>
+    <div class="sidebar-foot">
+      <button class="btn btn-glow w100" id="btnExpress">⚡ Mise à jour express</button>
+      <button class="btn w100 pc-only" id="btnPhone">📱 Sur mon téléphone</button>
+      <div class="hint">Raccourcis : <kbd>U</kbd> mise à jour · <kbd>N</kbd> nouveau · <kbd>M</kbd> masquer</div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h1 id="viewTitle">Tableau de bord</h1>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="btnPrivacy" title="Masquer les montants (M)">👁️</button>
+        <button class="icon-btn" id="btnTheme" title="Thème clair / sombre">🌙</button>
+        <button class="btn btn-primary" id="btnAdd">＋ Ajouter</button>
+      </div>
+    </header>
+    <section id="view" class="view"></section>
+  </main>
+</div>
+
+<!-- Téléphone : barre d'onglets en bas de l'écran -->
+<nav class="tabbar" id="tabbar" aria-label="Navigation principale">
+  <button data-tab="dashboard" class="on"><span>🏠</span><em>Accueil</em></button>
+  <button data-tab="accounts"><span>💼</span><em>Patrimoine</em></button>
+  <button data-tab="plus" class="tab-fab" aria-label="Ajouter ou mettre à jour"><span>＋</span></button>
+  <button data-tab="friends"><span>👥</span><em>Amis</em></button>
+  <button data-tab="more"><span>☰</span><em>Plus</em></button>
+</nav>
+
+<div id="modalRoot"></div>
+<div id="toasts" class="toasts"></div>
+<canvas id="confetti"></canvas>
+
+<script src="js/data.js"></script>
+<script src="js/market.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/history.js"></script>
+<script src="js/views.js"></script>
+<script src="js/views2.js"></script>
+<script src="js/supabase-sql.js"></script>
+<script src="js/social.js"></script>
+<script src="js/friends.js"></script>
+<script src="js/addflow.js"></script>
+<script src="js/filestore.js"></script>
+<script src="js/updates.js"></script>
+<script src="js/feed.js"></script>
+<script src="js/backup.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
