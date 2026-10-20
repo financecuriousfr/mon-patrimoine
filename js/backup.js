@@ -201,6 +201,7 @@ function openRestoreModal(prefill = '') {
         save({ auto: true }); closeModal();   // garde la date de modification d'origine : rien à renvoyer
         applyTheme(); applyPrivacy(); go('dashboard');
         if (state.group) { pushProfile(); pullMembers(); }
+        setTimeout(() => { kickLive(); refreshPrices({ silent: true }).then(() => { if (!modalOpen()) rerender(); }); }, 300);
         toast('♻️ Patrimoine récupéré', WEB_MODE ? 'Tes modifications se synchronisent avec ton PC.' : 'Tout est revenu, groupe compris.'); confetti.burst(120);
         if (WEB_MODE) setTimeout(showInstallTip, 2500);
       };

@@ -362,6 +362,7 @@ function refreshLiveCharts() {
   if (typeof updateMemberLive === 'function') updateMemberLive();
 }
 
+let kickLive = () => {};   // relance immédiate des cours en direct (ex. : juste après une restauration)
 function startLiveCharts() {
   const tick = async () => {
     if (document.hidden) return;
@@ -371,6 +372,7 @@ function startLiveCharts() {
     ensureHistory(keys);
     refreshLiveCharts();
   };
+  kickLive = tick;
   setTimeout(tick, 1200);
   setInterval(tick, LIVE_MS);
   addEventListener('visibilitychange', () => { if (!document.hidden) tick(); });
