@@ -483,10 +483,12 @@ function openMoreSheet() {
       <div><b>${esc(state.profile.name || 'Mon patrimoine')}</b><div class="small muted">Niv. ${l.idx} · ${esc(l.cur.name)}${g && !g.kicked ? ` · 👥 ${esc(g.groupName)}` : ''}</div></div></div>
     <div class="sheet-grid">${pages.map(([v, e, t]) => `<button class="sheet-tile ${currentView === v ? 'on' : ''}" data-go="${v}"><span>${e}</span>${t}</button>`).join('')}</div>
     <div class="sheet-list compact">
+      ${canInstall() ? '<button class="sheet-item primary" data-t="install"><span class="si-ico">📲</span><span><b>Installer l\'app</b><small>Une icône sur ton écran d\'accueil, en plein écran</small></span></button>' : ''}
       <button class="sheet-item" data-t="privacy"><span class="si-ico">${state.settings.privacy ? '👁️' : '🙈'}</span><span><b>${state.settings.privacy ? 'Afficher les montants' : 'Masquer les montants'}</b><small>Pratique en public</small></span></button>
       <button class="sheet-item" data-t="theme"><span class="si-ico">${state.settings.theme === 'dark' ? '☀️' : '🌙'}</span><span><b>Thème ${state.settings.theme === 'dark' ? 'clair' : 'sombre'}</b></span></button>
     </div>`, { cls: 'sheet' });
   m.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { closeModal(); go(b.dataset.go); });
+  m.querySelector('[data-t="install"]')?.addEventListener('click', () => { closeModal(); askInstall({ force: true }); });
   m.querySelector('[data-t="privacy"]').onclick = () => { closeModal(); togglePrivacy(); };
   m.querySelector('[data-t="theme"]').onclick = () => { closeModal(); state.settings.theme = state.settings.theme === 'dark' ? 'light' : 'dark'; save(); applyTheme(); rerender(); };
 }
@@ -602,6 +604,7 @@ startFileStore();
 startLiveCharts();
 startUpdates();
 startBackup();
+startInstallOffer();
 // Version en ligne : fonctionne aussi sans réseau (dernière version gardée en cache)
 if (WEB_MODE && 'serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {});
 

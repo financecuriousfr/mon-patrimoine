@@ -212,7 +212,7 @@ function openRestoreModal(prefill = '') {
         if (state.group) { pushProfile(); pullMembers(); }
         setTimeout(() => { kickLive(); refreshPrices({ silent: true }).then(() => { if (!modalOpen()) rerender(); }); }, 300);
         toast('♻️ Patrimoine récupéré', WEB_MODE ? 'Tes modifications se synchronisent avec ton PC.' : 'Tout est revenu, groupe compris.'); confetti.burst(120);
-        if (WEB_MODE) setTimeout(showInstallTip, 2500);
+        if (WEB_MODE) setTimeout(() => askInstall(), 2500);
       };
     } catch (e) {
       m.querySelector('#rInfo').innerHTML = `<span class="down">⚠️ ${esc(e.message)}</span>`;
