@@ -184,8 +184,17 @@ function openRestoreModal(prefill = '') {
     <div class="modal-foot"><button class="btn left" id="rCancel">Annuler</button><button class="btn btn-primary" id="rGo">Chercher ma sauvegarde</button></div>`);
   m.querySelector('#rCancel').onclick = closeModal;
   const go1 = async () => {
-    const kit = readKit(m.querySelector('#rCode').value);
-    if (!kit) { m.querySelector('#rCode').hidden = false; return shake(m.querySelector('#rCode')); }
+    const raw = m.querySelector('#rCode').value.trim();
+    const kit = readKit(raw);
+    if (!kit) {
+      m.querySelector('#rCode').hidden = false;
+      // Erreur fréquente : le code d'invitation du groupe à la place de la clé de secours
+      m.querySelector('#rInfo').innerHTML = /^MP1\./.test(raw)
+        ? `<div class="m-warn">⚠️ Ça, c'est le <b>code d'invitation du groupe</b>, pas ta clé de secours.<br>
+           Ta clé est dans l'app de ton ordi : <b>Réglages → Sauvegarde en ligne chiffrée → 🔑 Ma clé de secours</b> (elle commence par « MPS »).</div>`
+        : raw ? '<div class="m-warn">⚠️ Clé non reconnue : elle commence par « MPS1. » ou « MPS2. ». Copie-la en entier.</div>' : '';
+      return shake(m.querySelector('#rCode'));
+    }
     const btn = m.querySelector('#rGo');
     btn.disabled = true; btn.textContent = '⏳ Déchiffrement…';
     try {

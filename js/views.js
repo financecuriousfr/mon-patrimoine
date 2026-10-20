@@ -51,12 +51,22 @@ function renderWelcome(v) {
           <p class="faint">Lecture de ta sauvegarde sur le disque.</p></div>`;
     return;
   }
-  v.innerHTML = `
-  <div class="card empty">
+  // Version téléphone : la plupart arrivent avec l'app déjà installée sur leur ordi
+  const phoneFirst = WEB_MODE ? `
+  <div class="card restore-first">
+    <div class="big">📱</div>
+    <h2>Tu as déjà l'app sur ton ordi ?</h2>
+    <p>Récupère ton patrimoine ici (comptes, historique, groupe d'amis), synchronisé avec ton ordi.</p>
+    <button class="btn btn-primary w100" onclick="openRestoreModal()">♻️ Récupérer mon patrimoine</button>
+    <div class="steps-mini">Sur ton ordi : <b>📱 Sur mon téléphone</b> (menu de gauche) puis scanne le QR code.<br>
+      Ou copie ta clé : <b>Réglages → Sauvegarde en ligne chiffrée → 🔑 Ma clé de secours</b>.</div>
+  </div>` : '';
+  v.innerHTML = phoneFirst + `
+  <div class="card empty ${WEB_MODE ? 'mt' : ''}">
     <div class="big">🌱</div>
     <h2>Bienvenue dans ton patrimoine${state.profile.name ? ', ' + esc(state.profile.name) : ''} !</h2>
     <p>Ajoute tes comptes, livrets, placements, biens et crédits : l'app calcule ton patrimoine net, le projette dans le futur,
-      te compare aux ménages français et transforme ta progression en jeu. Tout reste <b>sur ton ordinateur</b>.</p>
+      te compare aux ménages français et transforme ta progression en jeu. Tout reste <b>sur ton appareil</b> (la sauvegarde en ligne est chiffrée).</p>
     <div class="row wrap" style="justify-content:center">
       <button class="btn btn-primary" data-act="add">＋ Ajouter mon premier compte</button>
       <button class="btn" data-act="demo">🎲 Explorer avec des données d'exemple</button>

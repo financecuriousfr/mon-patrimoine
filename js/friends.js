@@ -90,7 +90,14 @@ const nameOf = m => `<span>${esc(m.emoji || '🙂')} ${esc(m.name)}${m.me ? ' <s
 /* ---------- Pas encore de groupe ---------- */
 function renderFriendsSetup(v) {
   const p = state.profile;
-  v.innerHTML = `
+  // Téléphone : rejoindre une 2e fois créerait un double vide ; il faut récupérer son patrimoine
+  const phoneWarn = WEB_MODE ? `<div class="card restore-first" style="margin-bottom:16px">
+    <h2 style="margin-top:0">📱 Déjà dans le groupe sur ton ordi ?</h2>
+    <p>Ne rejoins pas le groupe une deuxième fois (tu apparaîtrais en double, avec un patrimoine vide).
+      Récupère plutôt ton patrimoine avec ta clé de secours : ton groupe revient avec.</p>
+    <button class="btn btn-primary w100" onclick="openRestoreModal()">♻️ Récupérer mon patrimoine</button>
+  </div>` : '';
+  v.innerHTML = phoneWarn + `
   <div class="card hero-friends">
     <div class="big">👥</div>
     <div><h2 style="margin:0 0 6px">Compare ton patrimoine avec tes amis</h2>
