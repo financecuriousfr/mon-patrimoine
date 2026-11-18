@@ -488,7 +488,7 @@ function openMemberModal(id) {
     </div>
     <div class="grid g2 mt">
       <div class="card"><h3>Répartition</h3><div class="donut-wrap"><div id="mDonut"></div><div class="legend" id="mLegend"></div></div></div>
-      <div class="card"><h3>Évolution</h3>${periodSegHTML()}<div id="mEvo" style="margin-top:10px"></div>
+      <div class="card"><h3 id="mEvoTitle">Évolution</h3>${periodSegHTML()}<div id="mEvoSum" style="margin-top:10px"></div><div id="mEvo" style="margin-top:10px"></div>
         <div class="small" id="mStatus" style="margin-top:6px"></div></div>
     </div>
     <div class="card mt"><h3>💼 Patrimoine détaillé</h3>${accHTML || '<div class="faint">Aucun compte.</div>'}</div>
@@ -530,10 +530,16 @@ function drawMemberEvo(animate = false) {
   if (!evo) { memberModalId = null; return; }
   const mem = groupMembers().find(x => x.id === memberModalId);
   if (!mem) return;
-  const pts = curvePoints(mem.data);
+  const day = chartPeriod === 'jour';
+  const title = document.getElementById('mEvoTitle'), sum = document.getElementById('mEvoSum');
+  if (title) title.textContent = day ? '📡 Ses placements aujourd\'hui' : 'Évolution';
+  // Jour : seulement ses placements suivis en direct, comme sur le tableau de bord
+  const pts = day ? investPoints(mem.data) : curvePoints(mem.data);
+  if (sum) sum.innerHTML = day ? investSummaryHTML(pts) : '';
   if (pts.length >= 2) {
-    if (animate || !chartBusy(evo)) lineChart(evo, { series: [{ name: 'Patrimoine net', color: mem.color, area: true, pulse: true, points: pts }], height: 220, animate, ...periodFormats() });
-  } else evo.innerHTML = '<div class="empty-chart">Pas encore d\'historique sur cette période.</div>';
+    const s = day ? { name: 'Placements suivis', color: investColor(pts) } : { name: 'Patrimoine net', color: mem.color };
+    if (animate || !chartBusy(evo)) lineChart(evo, { series: [{ ...s, area: true, pulse: true, points: pts }], height: 220, animate, ...periodFormats() });
+  } else evo.innerHTML = `<div class="empty-chart">${day ? 'Aucune ligne suivie en direct (actions, ETF, crypto).' : 'Pas encore d\'historique sur cette période.'}</div>`;
   const n = document.getElementById('mNet'); if (n) n.textContent = eur(mem.net);
   const st = document.getElementById('mStatus'); if (st) st.innerHTML = histStatusHTML(keysOf([mem.data]));
 }

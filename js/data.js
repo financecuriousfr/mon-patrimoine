@@ -7,7 +7,7 @@ const WEB_MODE = location.protocol === 'https:' || new URLSearchParams(location.
 const WEB_URL = 'https://financecuriousfr.github.io/mon-patrimoine/';
 const WEB_RELAY = 'https://dusgoveoivsnzipzucni.supabase.co/functions/v1/cours';
 if (WEB_MODE) document.documentElement.classList.add('web');
-const APP_VERSION = '2026.10.20-15'; // garder identique à version.txt
+const APP_VERSION = '2026.11.18-16'; // garder identique à version.txt
 
 const CATS = {
   cash:   { label: 'Comptes courants',      emoji: '💳', color: '#60a5fa', liquid: true },

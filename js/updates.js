@@ -5,7 +5,8 @@
    - Les membres : l'app vérifie au démarrage puis toutes les 30 min, télécharge
      la nouvelle version, le relais local l'installe et l'app redémarre.
    ========================================================= */
-const RELEASE_NOTES = `📱 L'app sur ton téléphone ! Bouton « 📱 Sur mon téléphone » (menu de gauche) : scanne le QR code
+const RELEASE_NOTES = `📡 Graphique « Jour » : il ne montre plus que tes placements suivis en direct, avec leur variation sur 24 h
+📱 L'app sur ton téléphone ! Bouton « 📱 Sur mon téléphone » (menu de gauche) : scanne le QR code
 🔄 Synchronisation automatique entre ton PC et ton téléphone (chiffrée)
 👆 Graphiques lisibles au doigt, fil du groupe plus compact
 ⚡ Plus de « clignotement » de l'écran quand les cours se mettent à jour`;

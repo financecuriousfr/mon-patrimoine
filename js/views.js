@@ -24,9 +24,25 @@ function updateDashLive({ animate = false } = {}) {
   const d = myCurveData();
   const st = document.getElementById('evoStatus');
   if (st) st.innerHTML = histStatusHTML(keysOf([d]));
-  if (!animate && chartBusy(evo)) return;
+  const day = chartPeriod === 'jour';
+  const title = document.getElementById('evoTitle'), sum = document.getElementById('evoSum'), note = document.getElementById('evoNote');
+  if (title) title.textContent = day ? '📡 Tes placements aujourd\'hui' : 'Évolution du patrimoine net';
+  if (note) note.textContent = day ? INVEST_NOTE : '';
+  // Jour : seulement les placements suivis en direct (le reste ne bouge pas dans la journée)
+  const ip = day ? investPoints(d) : [];
+  if (sum) sum.innerHTML = day ? investSummaryHTML(ip) : '';   // le résumé suit toujours les cours
+  if (!animate && chartBusy(evo)) return;                       // la courbe attend qu'on ait fini de la lire
   // Le tracé animé ne rejoue pas à chaque actualisation des cours, seulement au changement de période
   if (animate) { animate = updateDashLive.sig !== chartPeriod; updateDashLive.sig = chartPeriod; }
+  if (day) {
+    if (ip.length < 2) {
+      evo.innerHTML = `<div class="empty-chart"><div>📡<br>Ajoute des lignes suivies en direct (actions, ETF, crypto) pour voir leur évolution du jour.<br>
+        <button class="btn btn-sm mt" data-act="add">＋ Ajouter un placement</button></div></div>`;
+      return;
+    }
+    lineChart(evo, { series: [{ name: 'Placements suivis', color: investColor(ip), area: true, pulse: true, points: ip }], height: 230, animate, ...periodFormats() });
+    return;
+  }
   const pts = curvePoints(d);
   if (pts.length < 2) {
     evo.innerHTML = `<div class="empty-chart"><div>📈<br>Ta courbe apparaîtra ici après ta première photo${holdingsOf(d).length ? '' : ' ou ta première ligne suivie 📡'}.<br>
@@ -197,9 +213,11 @@ function renderDashboard(v) {
       <div class="donut-wrap"><div id="donut"></div><div class="legend" id="legend"></div></div>
     </div>
     <div class="card">
-      <h3>Évolution du patrimoine net <span class="actions"><button class="btn btn-sm btn-ghost" data-view-link="history">Historique →</button></span></h3>
+      <h3><span id="evoTitle">Évolution du patrimoine net</span> <span class="actions"><button class="btn btn-sm btn-ghost" data-view-link="history">Historique →</button></span></h3>
       <div class="row between wrap" style="gap:8px;margin-bottom:8px">${periodSegHTML()}<span class="small" id="evoStatus"></span></div>
+      <div id="evoSum"></div>
       <div id="evo"></div>
+      <div class="small faint chart-note" id="evoNote"></div>
     </div>
   </div>
 

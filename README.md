@@ -5,4 +5,4 @@ Version telephone de l'app Mon Patrimoine : https://financecuriousfr.github.io/m
 Ce depot ne contient que le code de l'interface. Aucune donnee personnelle :
 les donnees de chacun sont chiffrees sur son appareil avant toute sauvegarde en ligne.
 
-Version 2026.10.20-15
+Version 2026.11.18-16

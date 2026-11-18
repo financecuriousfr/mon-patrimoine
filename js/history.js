@@ -289,6 +289,28 @@ function curvePoints(d, per = chartPeriod) {
   return gridTimes(per, m.steps, m.anchors).map(t => ({ x: new Date(t), y: m.at(t) })).filter(p => p.y != null && Number.isFinite(p.y));
 }
 
+/* Vue « Jour » : seulement les placements suivis en direct (Σ quantité × cours), sans les livrets,
+   biens ou dettes qui ne bougent pas dans la journée. Quantités actuelles : on voit la performance du jour. */
+function investPoints(d, per = 'jour') {
+  const H = holdingsOf(d);
+  if (!H.length) return [];
+  const fallback = {};
+  H.forEach(h => { fallback[h.key] = hist.live[h.key]?.p ?? h.price; });
+  return gridTimes(per).map(t => {
+    let v = 0;
+    for (const h of H) v += h.qty * (priceAt(h.key, per, t) ?? fallback[h.key] ?? 0);
+    return { x: new Date(t), y: v };
+  }).filter(p => Number.isFinite(p.y));
+}
+const investColor = pts => (pts.length > 1 && pts[pts.length - 1].y < pts[0].y ? '#f87171' : '#34d399');
+function investSummaryHTML(pts) {
+  if (pts.length < 2) return '';
+  const a = pts[0].y, b = pts[pts.length - 1].y;
+  return `<div class="invest-sum"><span class="muted">📡 Placements suivis</span> <b class="money">${eur(b)}</b>
+    ${deltaPill(b - a, a)} <span class="small faint">sur 24 h</span></div>`;
+}
+const INVEST_NOTE = 'Vue du jour : uniquement tes lignes suivies en direct (actions, ETF, crypto). Livrets, biens et dettes ne bougent pas dans la journée.';
+
 /* Courbes de tous les membres sur une même grille, et leur total */
 function groupCurves(members, per = chartPeriod) {
   const models = members.map(m => ({ m, model: buildModel(m.data, per) }));
